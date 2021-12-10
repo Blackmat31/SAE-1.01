@@ -1,4 +1,3 @@
-
 public class MEE{
 
     private int [] tabFreq; //tabFreq[i] est le nombre d’exemplaires
@@ -58,7 +57,34 @@ public class MEE{
         return nbTotEx==0;
     }
     public void ajoute(int i){
-        
+        this.tabFreq[i]++;
+
+
+    }
+    public boolean retire(int i){
+        boolean retire=false;
+        if(this.tabFreq[i]>0){
+            retire=true;
+            this.tabFreq[i]--;
+
+        }
+        return retire;
+
+
+    }
+    public int retireAleat(){
+        return this.nbTotEx
+
+    }
+    public boolean transfere(MEE e,int i){
+
+    }
+    public int transfereAleat(MEE e,int k){
+
+    }
+    public int sommeValeurs(int[] v){
+
     }
 }
+
 

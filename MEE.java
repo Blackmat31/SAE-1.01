@@ -13,18 +13,8 @@ public class MEE{
      */
 
     public MEE (int max){
-       
-        if(max>=0){
-            this.tabFreq= new int[26]; 
-            this.nbTotEx= max;
-           
-
-            for(int i=0;i<this.tabFreq.length-1;i++){ //on remplit le tableau de zéro
-                this.tabFreq[i]=0;
-
-            }
-
-            }
+            this.tabFreq= new int[max]; 
+            this.nbTotEx= 0;
         }
         /**
          * pré-requis : les éléments de tab sont positifs ou nuls
@@ -33,10 +23,11 @@ public class MEE{
          * 
          */
         public MEE(int[] tab){
-            this.tabFreq= new int[26]; 
             for(int i=0;i<this.tabFreq.length-1;i++){ 
                 this.tabFreq[i]=tab[i];
-                this.nbTotEx=this.nbTotEx+tab[i];
+                if (tab[i]!=0) {
+                    this.nbTotEx=this.nbTotEx+tab[i];   
+                }
         }
 
         
@@ -46,19 +37,15 @@ public class MEE{
      * @param e
      */
     public MEE(MEE e){
-        this.tabFreq= new int[26];
-        this.nbTotEx=e.nbTotEx;
-        for(int i=0;i<this.tabFreq.length-1;i++){ 
-            this.tabFreq[i]=e.tabFreq[i];
+        this(e.tabFreq);
             
-    }
     }
     public boolean estVide(){
         return nbTotEx==0;
     }
     public void ajoute(int i){
         this.tabFreq[i]++;
-
+        this.nbTotEx++;
 
     }
     public boolean retire(int i){
@@ -66,6 +53,7 @@ public class MEE{
         if(this.tabFreq[i]>0){
             retire=true;
             this.tabFreq[i]--;
+            this.nbTotEx--;
 
         }
         return retire;
@@ -73,18 +61,60 @@ public class MEE{
 
     }
     public int retireAleat(){
-        return this.nbTotEx
+        int nbAlea=-1;
+        if (this.estVide()==false) {
+            nbAlea = Ut.randomMinMax(0, this.tabFreq.length-1);
+            while(this.tabFreq[nbAlea]==0) {
+                nbAlea = Ut.randomMinMax(0, this.tabFreq.length-1);
+        }              
+        this.nbTotEx--;
+        this.tabFreq[nbAlea]--;
+        
+        
+    }
+        return nbAlea;
 
     }
     public boolean transfere(MEE e,int i){
-
+        boolean transfereOk= false;
+        if(i>=0 && i<this.tabFreq.length && this.tabFreq[i]>0){
+            e.tabFreq[i]++;
+            this.tabFreq[i]--;
+            transfereOk=true;
+        }
+        return transfereOk;
     }
     public int transfereAleat(MEE e,int k){
+        int comptVal=1;
+        int valSelect;
+        int res=0;
+        while(comptVal<=k){
+            valSelect=Ut.randomMinMax(0,(this.tabFreq.length-1));
+            this.transfere(e, valSelect);
+            if(this.transfere(e, valSelect)==true){
+                res++;
+            }
+            comptVal++;
+        }
+        return res;
+        }
+    public int sommeValeurs(int[] v){
+        int sommeVal=0;
+        if(this.tabFreq.length<=v.length){
+            for (int i = 0; i<this.tabFreq.length; i++){
+                    sommeVal +=this.tabFreq[i]*v[i];
+                }
+            }
+        return sommeVal;
 
     }
-    public int sommeValeurs(int[] v){
-
+    public int[] getTabFreq(){
+        return this.tabFreq;
+    }
+    public int getTabFreq(int i){
+        return this.tabFreq[i];
+    }
+    public int getCardinal(){
+        return this.nbTotEx;
     }
 }
-
-
